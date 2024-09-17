@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> 7 Citrine Interior</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="invoice.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.7.1.slim.js" integrity="sha256-UgvvN8vBkgO0luPSUl2s8TIlOSYRoGFAX4jlCIm9Adc=" crossorigin="anonymous"></script>
+<style>
+    @media print {
+        .Add{
+            display: none;
+        }
+        .btn{
+            display: none;
+        }
+    }
+
+</style>
+</head>
+<body>
+    <div class="main">
+   <div class="bod">
+    <div class="CON">
+        <i class="fa-solid fa-phone"></i> <lable>+91 8806 8806 17</lable><br><br>
+        <i class="fa-solid fa-envelope"></i>
+        <lable>7citrineinterior@gmail.com   </lable> <br> <br>
+        <i class="fa-solid fa-location-dot"></i>  <lable>OPP.SHOBHA CARNATION H&M ROYAL LANE,<br> TALAB KONDWHA,PUNE-48</lable>
+</div>
+<img src="WhatsApp Image 2024-09-16 at 10.45.53 PM.jpeg">
+</div>
+
+
+ <!-- Bill Details -->
+ <div class="row mt-3">
+    <div class="col-md-6">
+        <label for="bill">BILL NUMBER:</label>
+        <input type="text" placeholder="Please enter bill number..." required id="bill" class="form-control">
+    </div>
+    <div class="col-md-6">
+        <label>Date:</label>
+        <input type="date" class="form-control">
+    </div>
+</div>
+<div class="row mt-2">
+    <div class="col-md-12">
+        <label>CUSTOMER NAME:</label>
+        <input type="text" placeholder="Name..." required id="csna" class="form-control">
+    </div>
+</div>
+
+<!-- Invoice Table -->
+<div class="card ">
+    <div class="card-header">
+      <h2>
+            <select class="form-select">
+                <option value="Estimate" id="estimate-dark"> Estimate</option>
+                <option value="Invoice"id="invoice">Invoice</option>
+            </select>
+        </h2>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">SR.NO</th>
+                    <th scope="col">Item Name</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Rate</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody id="Tbodyy">
+                <tr id="Trow" class="d-none">
+                    <th scope="row">1</th>
+                    <td><input type="text" class="form-control"></td>
+                    <td><input type="number" class="form-control" name="Quantity" onchange="Cal(this)"></td>
+                    <td><input type="number" class="form-control" name="Rate" onchange="Cal(this)"></td>
+                    <td><input type="number" class="form-control" name="Amount" readonly></td>
+                    <td><button type="button" class="btn btn-danger" onclick="btndel(this)">X</button></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="input-group mb-3">
+            <span class="input-group-text">Total</span>
+            <input type="text" id="ftotal" class="form-control" readonly>
+        </div>
+        <button class="btn btn-primary" onclick="btnadd()">Add Item</button>
+        <button class="btn btn-secondary" onclick="GetPrint()">Print</button>
+    </div>
+</div>
+
+<!-- Terms and Conditions -->
+<div class="mt">
+    <h3>Terms & Conditions:</h3>
+    <p id="text">
+        1. Advance payment of 50% should be paid as work is confirmed.<br>
+        2. After receiving 50% advance payment in early daytime, material will be dispatched on the same day.<br>
+        3. Balance payment should be paid as per demand for further work.<br>
+        4. Estimated amount may vary as per actual work done.<br>
+        5. Extra work will incur additional costs.<br>
+        6. Final payment should be made on the day of work completion.<br>
+        7. Rates may vary according to changes in material costs from the estimate date.
+    </p>
+</div>
+<div class="text">
+    <h3>Thank you for doing business with us</h3>
+    
+</div>
+<h3 id="text3">7 Citrine Interior</h3>
+
+   <script>
+
+function GetPrint() {
+            window.print();
+        }
+
+        function btnadd() {
+            var v = $("#Trow").clone().removeClass("d-none").appendTo("#Tbodyy");
+            $(v).find("input").val('');
+            GetTotal();
+        }
+
+        function btndel(v) {
+            $(v).closest('tr').remove();
+            GetTotal();
+        }
+
+        function Cal(v) {
+            var index = $(v).closest('tr').index();
+            var Quantity = parseFloat(document.getElementsByName("Quantity")[index].value) || 0;
+            var Rate = parseFloat(document.getElementsByName("Rate")[index].value) || 0;
+            var Amount = Quantity * Rate;
+            document.getElementsByName("Amount")[index].value = Amount;
+            GetTotal();
+        }
+
+        function GetTotal() {
+            var sum = 0;
+            var Amounts = document.getElementsByName("Amount");
+            for (let index = 0; index < Amounts.length; index++) {
+                var Amount = parseFloat(Amounts[index].value) || 0;
+                sum += Amount;
+            }
+            document.getElementById("ftotal").value = sum.toFixed(2);
+        }
+</script>
+</body>
+</html>
